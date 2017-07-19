@@ -22,8 +22,8 @@ class AnIssuePage(Page):
     issue_publication = models.ForeignKey('anIssue.APublication',
                                           null=True,
                                           blank=True,
-                                          on_delete=models.SET_NULL,
                                           related_name='+',
+                                          on_delete=models.SET_NULL,
                                          )
 
 
@@ -33,7 +33,6 @@ class AnIssuePage(Page):
         SnippetChooserPanel("issue_publication"),
         FieldPanel("pdf_file"),
         InlinePanel("issue_pages", label="Pages for this Issue"),
-        
     ]
 
 class PageImageOrderable(Orderable):
