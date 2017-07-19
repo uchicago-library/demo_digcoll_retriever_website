@@ -9,6 +9,7 @@ from wagtail.wagtailcore import urls as wagtail_urls
 from wagtail.wagtaildocs import urls as wagtaildocs_urls
 
 from search import views as search_views
+from browseissues import views as browse_views
 
 urlpatterns = [
     url(r'^django-admin/', include(admin.site.urls)),
@@ -17,7 +18,7 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^search/$', search_views.search, name='search'),
-
+    url(r'^browse/(?P<publication_title>\w+)$', browse_views.browse_issues_by_publication, name="browsing_issues"),
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:

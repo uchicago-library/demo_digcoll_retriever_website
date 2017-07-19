@@ -1,11 +1,11 @@
 from django import template
-from anissue.models import Publication
+from anIssue.models import APublication
 
 register = template.Library()
 
-@register.inclusion_tags('anissue/tags/publications.html')
+@register.inclusion_tag('anissue/tags/publications.html', takes_context=True)
 def publications(context):
     return {
-        'publications': Publication.objects.all(),
+        'publications': APublication.objects.all(),
         'request': context['request'],
     }

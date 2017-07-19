@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags publication_tags %}
 
-
 {% block content %}
     <h1>Welcome to the demo</h1>
-    {% publications %}
-
+    <ul>
+        <li><a href="/browse?publication_title=Chicago Maroon">Chicago Maroon</a></li>
+        <li><a href="/browse?publication_title=University of Chicago Magazine">University of Chicago Magazine</a></li>
+        <li><a href="/browse?publication_title=University of Chicago Record">University of Chicago Record</a></li>
+        <li><a href="/browse?publication_title=University Record">University Record</a></li>
+        <li><a href"/browse?publication_title=University Record (New Series)">University Record (New Series)</a></li>
+    </ul>
 {% endblock %}
+

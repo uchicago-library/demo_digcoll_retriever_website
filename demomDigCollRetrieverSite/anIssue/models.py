@@ -16,9 +16,6 @@ class APublication(models.Model):
         return self.publication_title
 
 class AnIssuePage(Page):
-    volume = models.CharField(max_length=50)
-    issue = models.CharField(max_length=50)
-    pdf_file = models.URLField()
     issue_publication = models.ForeignKey('anIssue.APublication',
                                           null=True,
                                           blank=True,
@@ -26,12 +23,11 @@ class AnIssuePage(Page):
                                           on_delete=models.SET_NULL,
                                          )
 
+    metadata = models.URLField()
 
     content_panels = Page.content_panels + [
-        FieldPanel("volume"),
-        FieldPanel("issue"),
+        FieldPanel("metadata"),
         SnippetChooserPanel("issue_publication"),
-        FieldPanel("pdf_file"),
         InlinePanel("issue_pages", label="Pages for this Issue"),
     ]
 
