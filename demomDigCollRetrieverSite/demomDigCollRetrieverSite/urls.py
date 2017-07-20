@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^search/$', search_views.search, name='search'),
-    url(r'^browse/(?P<publication_title>\w+)$', browse_views.browse_issues_by_publication, name="browsing_issues"),
+    url(r'^browse_by_type/$', browse_views.browse_issues_by_publication_type, name="browsing_issues_by_type"),
+    url(r'^browse_dates/$', browse_views.browse_for_dates, name="browse_dates"),
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:

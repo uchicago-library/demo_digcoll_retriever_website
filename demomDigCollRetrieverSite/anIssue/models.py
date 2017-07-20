@@ -38,10 +38,14 @@ class AnIssuePage(Page):
                                          )
     volume = models.CharField(max_length=50, blank=True, null=True)
     issue = models.CharField(max_length=50, blank=True, null=True)
+    identifier = models.CharField(max_length=50)
+    publication_date = models.CharField(max_length=255)
 
     content_panels = Page.content_panels + [
         FieldPanel("volume"),
         FieldPanel("issue"),
+        FieldPanel("identifier"),
+        FieldPanel("publication_date"),
         SnippetChooserPanel("issue_publication"),
         InlinePanel("issue_pages", label="Pages for this Issue"),
     ]

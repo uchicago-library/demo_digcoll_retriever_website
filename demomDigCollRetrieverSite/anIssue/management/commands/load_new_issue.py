@@ -54,18 +54,23 @@ class Command(BaseCommand):
             else:
                 publication = publication_check[0]
             volume = identifier.split('-')[2]
-            issue = identifier.split('-')[3]
-            new_issue = AnIssuePage()
-            new_issue.issue_publication = publication
-            new_issue.volume = volume.lstrip('0')
-            new_issue.issue = issue.lstrip('0')
-            new_issue.title = title + 'volume ' + volume.lstrip('0') + ' issue ' + issue.lstrip('0')
+            issue = identifier.split('-')[3] 
+            issue_str = issue.lstrip('0') if issue.lstrip('0') != "" else '0'
+            the_title = title + ' volume ' + volume.lstrip('0') + ' issue ' + issue_str
+            if AnIssuePage.objects.filter(title=the_title).count() == 0:
+                new_issue = AnIssuePage()
+                new_issue.issue_publication = publication
+                new_issue.volume = volume.lstrip('0')
+                new_issue.issue = issue.lstrip('0') if issue.lstrip('0') != '' else '0'
+                new_issue.title = the_title 
+                new_issue.publication_date = date
+                home.add_child(instance=new_issue)
+                issue_page = AnIssuePage.objects.filter(title=the_title)[0]
+            else:
+                issue_page = AnIssuePage.objects.filter(title=the_title)[0]
             struct_url = options["digcoll_retriever_host"] + "/" + n_item["identifier"] + "/struct"
-            home.add_child(instance=new_issue)
+
             for p in n_item["pages"]:
                 page_url = options["digcoll_retriever_host"] + p + "/jpg"
-                page_req = Request(page_url)
-                with urlopen(page_req) as response:
-                    if response.code == 200:
-                        new_issue.issue_pages.create(page_url=page_url, page_number=p.split('_')[1].strip('.jpg'))
-                        new_issue.save()
+                issue_page.issue_pages.create(page_url=page_url, page_number=p.split('_')[1].strip('.jpg'))
+                issue_page.save()
