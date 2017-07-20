@@ -5,28 +5,43 @@ from wagtail.wagtailcore.models import Page, Orderable
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, InlinePanel
 from wagtail.wagtailsnippets.edit_handlers import SnippetChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
+from wagtail.wagtailcore.fields import RichTextField
 
 # Create your models here.
 
 @register_snippet
-class APublication(models.Model):
+class PublicationType(models.Model):
+    publication_type = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.publication_type
+
+@register_snippet
+class Publication(models.Model):
     publication_title = models.CharField(max_length=255)
+    publication_description = RichTextField()
+    the_type = models.ForeignKey('anIssue.PublicationType',
+                                 null=True,
+                                 blank=True,
+                                 related_name='+',
+                                 on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.publication_title
 
 class AnIssuePage(Page):
-    issue_publication = models.ForeignKey('anIssue.APublication',
+    issue_publication = models.ForeignKey('anIssue.Publication',
                                           null=True,
                                           blank=True,
                                           related_name='+',
                                           on_delete=models.SET_NULL,
                                          )
-
-    metadata = models.URLField()
+    volume = models.CharField(max_length=50, blank=True, null=True)
+    issue = models.CharField(max_length=50, blank=True, null=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("metadata"),
+        FieldPanel("volume"),
+        FieldPanel("issue"),
         SnippetChooserPanel("issue_publication"),
         InlinePanel("issue_pages", label="Pages for this Issue"),
     ]

@@ -2,9 +2,6 @@
 
 {% block content %}
 
-<h1>Hello, world</h1>
-
-
 {% for page in self.issue_pages.all %}
 <img src="{{ page.page_url }}?width=75&height=75"/>
 {% endfor %}

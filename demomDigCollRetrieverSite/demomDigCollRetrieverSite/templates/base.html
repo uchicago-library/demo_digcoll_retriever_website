@@ -6,38 +6,67 @@
     <meta charset="utf=8">
     <meta name="viewport" content="width=device-width; initial-scale=1.0">
     <title>{{ self.title }}</title>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
-    {% block extra_css %}
-        {# Override this in templates to add extra stylesheets #}
-    {% endblock %}
-
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" />
 </head>
 <body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <button class="navbar-toggle collapsed"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarData"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Demo DigColl Retriever Website</a>
+            <div id="navabarData"
+                 class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Home</a></li>
+                <li class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                       Browse
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">University Titles</a></li>
+                        <li><a href="#">Student Titles</a></li>
+                        <li><a href="#">Dates</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Rights and Permissions</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <form action="#" method="get">
+                    {% csrf_token %}
+                    <input name="query" id="query" placeholder="Enter search term"/>
+                    <input type="submit" value="Search">
+                </form>
+                <li><a href="#">Advanced Search</a></li>
+            </ul>
+        </div>
+        </div>
+    </nav>
 
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="brand" href="#">Demo digcoll_retriever site</a>
+    <div class="container">
+        <div class="col-lg-12">
+            <div class="row">
+                {% block content %}
+                {% endblock %}
             </div>
         </div>
     </div>
-
-    <div class="container">
-        <div class="col-lg-5">
-           {% block content %}
-           {% endblock %}
-        </div>
-    </div>
-
-   {% wagtailuserbar %}
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-    {# Global javascript #}
-    <script type="text/javascript" src="{% static 'js/demomDigCollRetrieverSite.js' %}"></script>
+    {% wagtailuserbar %}
+   <script type="text/javascript" src="{% static 'bootstrap-3.3.7-dist/js/jquery.min.js' %}"></script>
+   <script type="text/javascript" src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.js' %}"></script>
     {% block extra_js %}
         {# Override this in templates to add extra javascript #}
     {% endblock %}
