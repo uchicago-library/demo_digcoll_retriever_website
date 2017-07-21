@@ -14,7 +14,7 @@ Demo depends on two things
     <identifier>mvol-0001-00003-0000</identifier>
 </metadata>
 ```
-3. running python manage.py load_new_issue http://localhost:5000 ../testdata/import_data.json
+3. running python manage.py load_new_issue http://localhost:5000/ ../testdata/import_data.json
 
 The import data.json file should look like this:
 
@@ -44,4 +44,15 @@ The import data.json file should look like this:
 ]
 ```
 
-4. running python manage.py runserver
+4. run python manage.py createsuperuser and enter the username and admin you want in the relevant field request. Remember the username and password you enter: you will need them later.
+
+
+5. running python manage.py runserver
+
+6. access the admin interface via http://localhost:5000/admin
+
+7. run demo by going to http://localhost:5000
+
+Enter "Cap" in the search box and click Search or hit Enter key
+
+8. Click on the volume information link to view a full page view of the matching Issue

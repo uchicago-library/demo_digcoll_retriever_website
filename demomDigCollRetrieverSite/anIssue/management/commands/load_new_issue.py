@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 import json
 from urllib.request import urlopen, Request
 from xml.etree import ElementTree
+from sys import stdout
 
 from anIssue.models import AnIssuePage, Publication, PublicationType
 from wagtail.wagtailcore.models import Page
@@ -43,19 +44,17 @@ class Command(BaseCommand):
             description = d.find('description').text
             date = d.find('date').text
             publication_check = Publication.objects.filter(publication_title=title)
-            print(publication_check)
             if publication_check.count() == 0:
                 publication = Publication()
                 publication.publication_title = title
                 publication.publication_description = description
                 ptype = PublicationType.objects.filter(publication_type='University')[0]
-                print(ptype)
                 publication.the_type = ptype
                 publication.save()
             else:
                 publication = publication_check[0]
             volume = identifier.split('-')[2]
-            issue = identifier.split('-')[3] 
+            issue = identifier.split('-')[3]
             issue_str = issue.lstrip('0') if issue.lstrip('0') != "" else '0'
             the_title = title + ' volume ' + volume.lstrip('0') + ' issue ' + issue_str
             if AnIssuePage.objects.filter(title=the_title).count() == 0:
@@ -63,7 +62,7 @@ class Command(BaseCommand):
                 new_issue.issue_publication = publication
                 new_issue.volume = volume.lstrip('0')
                 new_issue.issue = issue.lstrip('0') if issue.lstrip('0') != '' else '0'
-                new_issue.title = the_title 
+                new_issue.title = the_title
                 new_issue.publication_date = date
                 new_issue.identifier = identifier
                 home.add_child(instance=new_issue)
@@ -71,6 +70,12 @@ class Command(BaseCommand):
             else:
                 issue_page = AnIssuePage.objects.filter(title=the_title)[0]
             for p in n_item["pages"]:
-                page_url = options["digcoll_retriever_host"] + p + "/jpg"
-                issue_page.issue_pages.create(page_url=page_url, page_number=p.split('_')[1].strip('.jpg'))
-                issue_page.save()
+                purl = options["digcoll_retriever_host"] + p + "/jpg"
+                current_urls = [x.page_url
+                                for x in issue_page.issue_pages.all() if x.page_url==purl]
+                if len(current_urls) == 0:
+                    issue_page.issue_pages.create(page_url=page_url, page_number=p.split('_')[1].strip('.jpg'))
+                    issue_page.save()
+                    stdout.write("{ has been added to the issue {} in the website.\n".format(p))
+            stdout.write("{} has been saved to the website.\n".format(n_item["identifier"]))
+        stdout.write("finished processing {}.\n".format(options["import_data_file"]))
