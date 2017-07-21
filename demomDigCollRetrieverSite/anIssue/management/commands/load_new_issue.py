@@ -74,7 +74,8 @@ class Command(BaseCommand):
                 current_urls = [x.page_url
                                 for x in issue_page.issue_pages.all() if x.page_url==purl]
                 if len(current_urls) == 0:
-                    issue_page.issue_pages.create(page_url=page_url, page_number=p.split('_')[1].strip('.jpg'))
+                    issue_page.issue_pages.create(page_url=purl,
+                                                  page_number=p.split('_')[1].strip('.jpg'))
                     issue_page.save()
                     stdout.write("{ has been added to the issue {} in the website.\n".format(p))
             stdout.write("{} has been saved to the website.\n".format(n_item["identifier"]))
