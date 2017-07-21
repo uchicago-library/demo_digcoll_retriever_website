@@ -8,22 +8,31 @@
 {% block content %}
     <h1>Search</h1>
 
-    <form action="{% url 'search' %}" method="get">
-        <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
-    </form>
-
     {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
-                    {% if result.search_description %}
-                        {{ result.search_description }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        <table>
+            <tbody>
+                {% for result in search_results %}
+                    <tr>
+                        <td>
+                           {% for page in result.issue_pages.all %}
+                            {% if page.page_number == 1 %}
+
+                                <a href="{{ page.page_url }}">
+                                    <img src="{{ page.page_url }}?width=100&height=200" align="left"/>
+                                </a>
+                             {% endif %}
+                           {% endfor %}
+                        </td>
+                        <td>
+                            <p>Title: {{ result.issue_publication.publication_title }}</p>
+                            <p>Date: {{ result.publication_date }}</p>
+                            <p><a href="{% pageurl result %}">Volume: {{ result.volume }}, Issue: {{ result.issue }}</a></p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
 
         {% if search_results.has_previous %}
             <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>

@@ -2,30 +2,14 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<table class="table table-striped table-results">
-<thead>
-    <tr>
-        <th>Thumbnail</th>
-        <th>Information</th>
-    </tr>
-</thead>
-<tr>
-    <td>
+    <p>Title: {{ self.issue_publication.publication_title }}</p>
+    <p>Date: {{ self.publication_date }}</p>
+    <p>Volume: {{ self.volume }}, Issue: {{ self.issue }}</p>
+    {{ self.issue_publication.publication_description|richtext }}
+
     {% for page in self.issue_pages.all %}
-        {% if page.page_number == 1 %}
-        <a href="http://campub.lib.uchicago.edu/view/?docId={{ self.identifier }}">
+        <a href="{{ page.page_url }}">
             <img src="{{ page.page_url }}?width=100&height=200" align="left"/>
         </a>
-        {% endif %}
     {% endfor %}
-    </td>
-    <td>
-        <p>Title: {{ self.issue_publication.publication_title }}</p>
-        <p>Date: {{ self.publication_date }}</p>
-        <p>Volume: {{ self.volume }}, Issue: {{ self.issue }}</p>
-        {{ self.issue_publication.publication_description|richtext }}
-    </td>
-</tr>
-
-</table>
 {% endblock %}

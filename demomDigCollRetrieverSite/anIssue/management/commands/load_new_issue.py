@@ -3,7 +3,7 @@ import json
 from urllib.request import urlopen, Request
 from xml.etree import ElementTree
 
-from anIssue.models import AnIssuePage, Publication
+from anIssue.models import AnIssuePage, Publication, PublicationType
 from wagtail.wagtailcore.models import Page
 
 class Command(BaseCommand):
@@ -32,25 +32,26 @@ class Command(BaseCommand):
 
         for n_item in data:
             mdata_url = options["digcoll_retriever_host"] + n_item["metadata"]
-            print(mdata_url)
             mdata_req = Request(mdata_url)
             mdata_data = None
             with urlopen(mdata_req) as response:
                 if response.code == 200:
                     mdata_data = response.read()
-                    print(mdata_data)
-
             d = ElementTree.fromstring(mdata_data)
             identifier = n_item["identifier"]
             title = d.find('title').text
             description = d.find('description').text
             date = d.find('date').text
             publication_check = Publication.objects.filter(publication_title=title)
+            print(publication_check)
             if publication_check.count() == 0:
                 publication = Publication()
-                publication.title = title
-                publication.description = description
-                publication.type = 'university'
+                publication.publication_title = title
+                publication.publication_description = description
+                ptype = PublicationType.objects.filter(publication_type='University')[0]
+                print(ptype)
+                publication.the_type = ptype
+                publication.save()
             else:
                 publication = publication_check[0]
             volume = identifier.split('-')[2]
@@ -64,12 +65,11 @@ class Command(BaseCommand):
                 new_issue.issue = issue.lstrip('0') if issue.lstrip('0') != '' else '0'
                 new_issue.title = the_title 
                 new_issue.publication_date = date
+                new_issue.identifier = identifier
                 home.add_child(instance=new_issue)
                 issue_page = AnIssuePage.objects.filter(title=the_title)[0]
             else:
                 issue_page = AnIssuePage.objects.filter(title=the_title)[0]
-            struct_url = options["digcoll_retriever_host"] + "/" + n_item["identifier"] + "/struct"
-
             for p in n_item["pages"]:
                 page_url = options["digcoll_retriever_host"] + p + "/jpg"
                 issue_page.issue_pages.create(page_url=page_url, page_number=p.split('_')[1].strip('.jpg'))

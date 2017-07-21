@@ -42,7 +42,7 @@
                 <li><a href="{% slugurl 'rights-and-permissions' %}">Rights and Permissions</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <form action="#" method="get">
+                <form action="/search/" method="get">
                     {% csrf_token %}
                     <input name="query" id="query" placeholder="Enter search term"/>
                     <input type="submit" value="Search">

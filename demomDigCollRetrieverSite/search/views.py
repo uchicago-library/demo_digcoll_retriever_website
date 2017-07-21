@@ -6,14 +6,17 @@ from django.shortcuts import render
 from wagtail.wagtailcore.models import Page
 from wagtail.wagtailsearch.models import Query
 
+from anIssue.models import AnIssuePage
 
 def search(request):
     search_query = request.GET.get('query', None)
+
     page = request.GET.get('page', 1)
 
     # Search
     if search_query:
-        search_results = Page.objects.live().search(search_query)
+        search_results = AnIssuePage.objects.live().search(search_query)
+        print(search_results)
         query = Query.get(search_query)
 
         # Record hit

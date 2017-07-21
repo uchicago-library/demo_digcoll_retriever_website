@@ -6,6 +6,7 @@ from wagtail.wagtailadmin.edit_handlers import FieldPanel, InlinePanel
 from wagtail.wagtailsnippets.edit_handlers import SnippetChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
 from wagtail.wagtailcore.fields import RichTextField
+from wagtail.wagtailsearch import index
 
 # Create your models here.
 
@@ -48,6 +49,14 @@ class AnIssuePage(Page):
         FieldPanel("publication_date"),
         SnippetChooserPanel("issue_publication"),
         InlinePanel("issue_pages", label="Pages for this Issue"),
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField('volume'),
+        index.SearchField('issue'),
+        index.SearchField('publication_date'),
+        index.SearchField('issue_publication__publication_title'),
+        index.SearchField('issue_publication__publication_description')
     ]
 
 class PageImageOrderable(Orderable):
