@@ -3,6 +3,28 @@ function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
 }
 
+var searchParamters = window.location.href.split('?').slice(1)[0].split('&');
+
+var inputTitle = "";
+var inputNumLeafs = 0;
+
+
+for (i=0; i<searchParamters.length; i++) {
+    var fieldandvalue = searchParamters[i].split('=');
+    var field = fieldandvalue[0];
+    var value = fieldandvalue[1];
+    if (field == 'title') {
+        inputTitle = decodeURIComponent(value);
+    } else if (field == 'numleafs') {
+        console.log("hi");
+        inputNumLeafs = value;
+        console.log(value);
+        console.log(inputNumLeafs);
+    }
+}
+
+console.log(inputNumLeafs);
+
 // 
 // This file shows the minimum you need to provide to BookReader to display a book
 //
@@ -27,8 +49,7 @@ br.getPageURI = function(index, reduce, rotate) {
     // reduce and rotate are ignored in this simple implementation, but we
     // could e.g. look at reduce and load images from a different directory
     // or pass the information to an image server
-    console.log("hello");
-    //var leafStr = '000';            
+    //var leafStr = '000';
     var imgStr = (index+1).toString();
     //console.log(imgStr);
     //var re = new RegExp("0{"+imgStr.length+"}$");
@@ -50,7 +71,7 @@ br.getPageSide = function(index) {
 // This function returns the left and right indices for the user-visible
 // spread that contains the given index.  The return values may be
 // null if there is no facing page or the index is invalid.
-br.getSpreadIndices = function(pindex) {   
+br.getSpreadIndices = function(pindex) {
     var spreadIndices = [null, null]; 
     if ('rl' == this.pageProgression) {
         // Right to Left
@@ -73,7 +94,6 @@ br.getSpreadIndices = function(pindex) {
             spreadIndices[0] = pindex - 1;
         }
     }
-    
     return spreadIndices;
 }
 
@@ -86,11 +106,11 @@ br.getPageNum = function(index) {
 }
 
 // Total number of leafs
-br.numLeafs = 15;
+br.numLeafs = inputNumLeafs;
 
 // Book title and the URL used for the book title link
-br.bookTitle= 'Open Library BookReader Presentation';
-br.bookUrl  = 'http://openlibrary.org';
+br.bookTitle= inputTitle;
+br.bookUrl  = 'http://pi.lib.uchicago.edu/';
 
 // Override the path used to find UI images
 br.imagesBaseURL = '../BookReader/images/';
@@ -104,5 +124,5 @@ br.init();
 
 // read-aloud and search need backend compenents and are not supported in the demo
 $('#BRtoolbar').find('.read').hide();
-$('#textSrch').hide();
-$('#btnSrch').hide();
+//$('#textSrch').hide();
+//$('#btnSrch').hide();
