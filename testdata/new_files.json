@@ -1,0 +1,23 @@
+{
+    "identifier": "mvol-0001-0003-0000",
+    "correction": "new files",
+    "new_files": [
+        {"action":"addition",
+         "loc": "http://localhost:5000/mvol-0001-0003-0000_0011/jpg"
+        },
+        {"action":"addition",
+         "loc":"http://localhost:5000/mvol-0001-0003-0000_0012jpg"},
+        {"action":"addition",
+         "loc":"http://localhost:5000/mvol-0001-0003-0000_0013jpg"
+        },
+        {"action":"addition",
+         "loc":"http://localhost:5000/mvol-0001-0003-0000_0014jpg"
+        },
+        {"action":"addition",
+         "loc":"http://localhost:5000/mvol-0001-0003-0000_0015jpg"
+        },
+        {"action":"addition",
+         "loc":"http://localhost:5000/mvol-0001-0003-0000_0016jpg"
+        }
+    ]
+}

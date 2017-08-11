@@ -41,12 +41,14 @@ class AnIssuePage(Page):
     issue = models.CharField(max_length=50, blank=True, null=True)
     identifier = models.CharField(max_length=50)
     publication_date = models.CharField(max_length=255)
+    ocr_document = models.TextField()
 
     content_panels = Page.content_panels + [
         FieldPanel("volume"),
         FieldPanel("issue"),
         FieldPanel("identifier"),
         FieldPanel("publication_date"),
+        FieldPanel("ocr_document"),
         SnippetChooserPanel("issue_publication"),
         InlinePanel("issue_pages", label="Pages for this Issue"),
     ]
