@@ -16,16 +16,14 @@ for (i=0; i<searchParamters.length; i++) {
     if (field == 'title') {
         inputTitle = decodeURIComponent(value);
     } else if (field == 'numleafs') {
-        console.log("hi");
         inputNumLeafs = value;
-        console.log(value);
-        console.log(inputNumLeafs);
+    } else if (field == 'identifier') {
+        inputIdentifier = value;
     }
 }
 
-console.log(inputNumLeafs);
 
-// 
+//
 // This file shows the minimum you need to provide to BookReader to display a book
 //
 // Copyright(c)2008-2009 Internet Archive. Software license AGPL version 3.
@@ -54,7 +52,7 @@ br.getPageURI = function(index, reduce, rotate) {
     //console.log(imgStr);
     //var re = new RegExp("0{"+imgStr.length+"}$");
     //console.log(re);
-    var url = 'http://localhost:5000/mvol-0001-0003-0000_'+padDigits(imgStr, 4)+"/jpg";  //+leafStr.replace(re, imgStr) + '/jpg';
+    var url = 'http://localhost:5000/'+inputIdentifier+'_'+padDigits(imgStr, 4)+"/jpg";  //+leafStr.replace(re, imgStr) + '/jpg';
     console.log(url);
     return url;
 }

@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
 from django.shortcuts import render
 
 from wagtail.wagtailcore.models import Page
@@ -15,10 +16,11 @@ def search(request):
 
     # Search
     if search_query:
-        search_results = AnIssuePage.objects.live().search(search_query)
-        print(search_results)
+        search_results = AnIssuePage.objects.all()
         query = Query.get(search_query)
 
+        search_results = search_results.filter(Q(title__contains=search_query.strip()) |
+                                               Q(ocr_document__contains=search_query.strip()))
         # Record hit
         query.add_hit()
     else:

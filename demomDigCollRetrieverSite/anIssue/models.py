@@ -57,8 +57,9 @@ class AnIssuePage(Page):
         index.SearchField('volume'),
         index.SearchField('issue'),
         index.SearchField('publication_date'),
+        index.SearchField('ocr_document'),
         index.SearchField('issue_publication__publication_title'),
-        index.SearchField('issue_publication__publication_description')
+        index.SearchField('issue_publication__publication_description'),
     ]
 
 class PageImageOrderable(Orderable):
